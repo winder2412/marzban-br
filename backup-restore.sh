@@ -15,10 +15,13 @@ LOCAL_OPT_FILE="/opt/marzban"
 
 sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
 # Check if the local file exists and remove it if it does
-if [ -e "$LOCAL_FILE" ]; then
-    rm -rf "$LOCAL_FILE"
+if [ -e "$LOCAL_VAR_FILE" ]; then
+    rm -rf "$LOCAL_VAR_FILE"
 fi
 
+if [ -e "$LOCAL_OPT_FILE" ]; then
+    rm -rf "$LOCAL_OPT_FILE"
+fi
 # Connect to the server and copy the file to itself
 sftp $SERVER <<EOF
 get $REMOTE_FILE $LOCAL_FILE
