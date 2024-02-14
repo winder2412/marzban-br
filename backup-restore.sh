@@ -8,23 +8,20 @@ fi
 
 # Extract the server variable from the argument
 SERVER="$1"
-REMOTE_VAR_FILE="/var/lib/marzban"
-LOCAL_VAR_FILE="/var/lib/marzban"
-REMOTE_OPT_FILE="/opt/marzban"
-LOCAL_OPT_FILE="/opt/marzban"
+VAR_DIR="/var/lib/marzban"
+OPT_DIR="/opt/marzban"
 
 sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
 # Check if the local file exists and remove it if it does
-if [ -e "$LOCAL_VAR_FILE" ]; then
-    rm -rf "$LOCAL_VAR_FILE"
+if [ -e "$VAR_DIR" ]; then
+    rm -rf "$VAR_DIR"
 fi
 
-if [ -e "$LOCAL_OPT_FILE" ]; then
-    rm -rf "$LOCAL_OPT_FILE"
+if [ -e "$OPT_DIR" ]; then
+    rm -rf "$OPT_DIR"
 fi
 # Connect to the server and copy the file to itself
-sftp $SERVER <<EOF
-get $REMOTE_VAR_FILE $LOCAL_VAR_FILE
-get $REMOTE_OPT_FILE $LOCAL_OPT_FILE
-EOF
+scp -r $SERVER:$VAR_DIR $VAR_DIR
+scp -r $SERVER:$OPT_DIR $OPT_DIR
 
+marzban restart
