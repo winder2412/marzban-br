@@ -24,6 +24,7 @@ if [ -e "$LOCAL_OPT_FILE" ]; then
 fi
 # Connect to the server and copy the file to itself
 sftp $SERVER <<EOF
-get $REMOTE_FILE $LOCAL_FILE
+get $REMOTE_VAR_FILE $LOCAL_VAR_FILE
+get $REMOTE_OPT_FILE $LOCAL_OPT_FILE
 EOF
 
