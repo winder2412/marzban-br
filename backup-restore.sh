@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # Check if the correct number of arguments are provided
-if [ "$#" -ne 1 ]; then
-    echo "Usage: $0 <username@hostname>"
+if [ "$#" -ne 2 ]; then
+    echo "Usage: $0 <username@hostname> <password>"
     exit 1
 fi
 
-# Extract the server variable from the argument
+# Extract the server and password variables from the arguments
 SERVER="$1"
+PASSWORD="$2"
 VAR_DIR="/var/lib/marzban"
 OPT_DIR="/opt/marzban"
 
-sudo bash -c "$(curl -sL https://github.com/Gozargah/Marzban-scripts/raw/master/marzban.sh)" @ install
 # Check if the local file exists and remove it if it does
 if [ -e "$VAR_DIR" ]; then
     rm -rf "$VAR_DIR"
@@ -21,7 +21,9 @@ if [ -e "$OPT_DIR" ]; then
     rm -rf "$OPT_DIR"
 fi
 # Connect to the server and copy the file to itself
-scp -r $SERVER:$VAR_DIR $VAR_DIR
-scp -r $SERVER:$OPT_DIR $OPT_DIR
+sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r "$SERVER:$VAR_DIR" "$VAR_DIR"
+sshpass -p "$PASSWORD" scp -o StrictHostKeyChecking=no -r "$SERVER:$OPT_DIR" "$OPT_DIR"
+
 
 marzban restart
+
